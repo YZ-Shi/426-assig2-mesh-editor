@@ -1,8 +1,6 @@
 var Filters = Filters || {};
 
 // Space for your helper functions
-// ----------- STUDENT CODE BEGIN ------------
-// ----------- Our reference solution uses 105 lines of code.
 
 // find the face: v0 is one of its vertices, vL and vR are on two edges
 function faceBetweenThreeVerts(v0, vL, vR) {
@@ -37,7 +35,7 @@ let v2 = he.opposite.vertex;
 let length = CopyVec(v1.position).sub(v2.position).length();
 return;
 }*/
-// ----------- STUDENT CODE END ------------
+
 
 // Translate all selected vertices in the mesh by the given x,y,z offsets.
 Filters.translation = function(mesh, x, y, z) {
@@ -59,15 +57,14 @@ Filters.translation = function(mesh, x, y, z) {
 Filters.rotation = function(mesh, x, y, z) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 5 lines of code.
+
   const r = new THREE.Euler(x, y, z, 'XYZ');
 
   const n_vertices = verts.length;
   for (let i = 0; i < n_vertices; i++) {
     verts[i].position.applyEuler(r);
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -78,13 +75,11 @@ Filters.rotation = function(mesh, x, y, z) {
 Filters.scale = function(mesh, s) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 4 lines of code.
   const n_vertices = verts.length;
   for (let i = 0; i < n_vertices; i++) {
     verts[i].position.multiplyScalar(s);
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -94,9 +89,7 @@ Filters.scale = function(mesh, s) {
 // set that vertex's color to some value based on its curvature value.
 // (the precise mapping of curvature to color is left to you)
 Filters.curvature = function(mesh) {
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 102 lines of code.
-  // ----------- STUDENT CODE END ------------
+
   Gui.alertOnce("Curvature is not implemented yet");
 };
 
@@ -106,8 +99,7 @@ Filters.curvature = function(mesh) {
 Filters.noise = function(mesh, factor) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 13 lines of code.
+
   const n_vertices = verts.length;
   let offsets = []; // stores the offsets
   // calculate the positions for updating
@@ -123,7 +115,7 @@ Filters.noise = function(mesh, factor) {
   for (let i = 0; i < n_vertices; i++) {
     verts[i].position.add(offsets[i]);
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -155,8 +147,7 @@ Filters.noise = function(mesh, factor) {
 Filters.smooth = function(mesh, iter, delta, curvFlow, scaleDep, implicit) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 16 lines of code.
+
   const n_vertices = verts.length;
   if (curvFlow) Filters.triangulate(mesh); // curvFlow only: triangulate the mesh if using curvature-flow weighting scheme
 
@@ -222,7 +213,7 @@ Filters.smooth = function(mesh, iter, delta, curvFlow, scaleDep, implicit) {
       verts[i].position = CopyVec(new_positions[i]);
     }
   }
-  // ----------- STUDENT CODE END ------------
+
   mesh.calculateFacesArea();
   mesh.updateNormals();
 };
@@ -232,8 +223,7 @@ Filters.smooth = function(mesh, iter, delta, curvFlow, scaleDep, implicit) {
 Filters.sharpen = function(mesh, iter, delta) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 9 lines of code.
+
   const n_vertices = verts.length;
 
   for (let n = 0; n < iter; n++) { // for nth interation
@@ -260,7 +250,7 @@ Filters.sharpen = function(mesh, iter, delta) {
       verts[i].position = CopyVec(new_positions[i]);
     }
   }
-  // ----------- STUDENT CODE END ------------
+
   mesh.calculateFacesArea();
   mesh.updateNormals();
 };
@@ -270,8 +260,7 @@ Filters.sharpen = function(mesh, iter, delta) {
 Filters.inflate = function(mesh, factor) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 16 lines of code.
+
   const n_vertices = verts.length;
   let scaleFactor = []; // stores the positions for updating
   // calculate the positions
@@ -285,7 +274,7 @@ Filters.inflate = function(mesh, factor) {
   for (let i = 0; i < n_vertices; i++) {
     verts[i].position.add(scaleFactor[i]);
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -296,15 +285,14 @@ Filters.inflate = function(mesh, factor) {
 Filters.twist = function(mesh, factor) {
   const verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 8 lines of code.
+
   const n_vertices = verts.length;
   for (let i = 0; i < n_vertices; i++) {
     let rotate = verts[i].position.y * factor;
     let r = new THREE.Euler(0, rotate, 0, 'XYZ');
     verts[i].position.applyEuler(r);
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -312,15 +300,14 @@ Filters.twist = function(mesh, factor) {
 
 // warp a mesh using a nonlinear mapping of your choice
 Filters.wacky = function(mesh, factor) {
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 3 lines of code.
+
   for (let i = 0; i < mesh.vertices.length; i++) {
     mesh.vertices[i].position.x *= Math.abs(mesh.vertices[i].position.y);
     mesh.vertices[i].position.x *= factor;
     mesh.vertices[i].position.z *= Math.abs(mesh.vertices[i].position.y);
     mesh.vertices[i].position.z *= factor;
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -330,13 +317,12 @@ Filters.wacky = function(mesh, factor) {
 Filters.triangulate = function(mesh) {
   const faces = mesh.getModifiableFaces();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 4 lines of code.
+
   const n_faces = faces.length;
   for (let i = 0; i < n_faces; i++) {
     mesh.triangulateFace(faces[i]);
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -429,8 +415,7 @@ Filters.joinFaces = function(mesh) {
 Filters.extrude = function(mesh, factor) {
   const faces = mesh.getModifiableFaces();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 32 lines of code.
+
   const n_oldFaces = faces.length; // number of old faces
   for (let n = 0; n < n_oldFaces; n++) { // for each old face
     const oldVerts = mesh.verticesOnFace(faces[n]); // vertices on the old face
@@ -481,7 +466,7 @@ Filters.extrude = function(mesh, factor) {
       newVerts[i].position.add(normal.multiplyScalar(factor));
     }
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -492,8 +477,7 @@ Filters.extrude = function(mesh, factor) {
 // See the spec for more detail.
 Filters.truncate = function(mesh, factor) {
   const verts = mesh.getModifiableVertices();
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 64 lines of code.
+
   let n_oldVerts = verts.length;
   let new_pos = []; // new positions
   let newFaces = [];
@@ -538,7 +522,7 @@ Filters.truncate = function(mesh, factor) {
     if (new_pos[n] === undefined) continue;
     mesh.vertices[n].position = new_pos[n];
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -549,8 +533,6 @@ Filters.bevel = function ( mesh, factor ) {
 
   var verts = mesh.getModifiableVertices();
 
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 104 lines of code.
   let faces = mesh.getModifiableFaces();
   const n_faces = faces.length;
   Filters.truncate(mesh, 0); // truncate the vertices
@@ -611,7 +593,6 @@ Filters.bevel = function ( mesh, factor ) {
     }
   }
 
-  // ----------- STUDENT CODE END ------------
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -621,8 +602,7 @@ Filters.bevel = function ( mesh, factor ) {
 // factor is a float in [0,1]. it tells the proportion
 // of the total number of edges in the mesh that should be split.
 Filters.splitLong = function(mesh, factor) {
-  // ----------- STUDENT CODE BEGIN ------------
-  // ----------- Our reference solution uses 35 lines of code.
+
   // determine number of splits
   const f = mesh.getModifiableFaces();
   let he_id = [];
@@ -666,7 +646,7 @@ Filters.splitLong = function(mesh, factor) {
       if (f2.selected) newFace2.selected = true;
     }
   }
-  // ----------- STUDENT CODE END ------------
+
 
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -679,8 +659,7 @@ Filters.triSubdiv = function(mesh, levels) {
 
   for (let l = 0; l < levels; l++) {
     const faces = mesh.getModifiableFaces();
-    // ----------- STUDENT CODE BEGIN ------------
-    // ----------- Our reference solution uses 43 lines of code.
+
     const vertices = mesh.getModifiableVertices();
     const n_faces = faces.length;
     const n_verts = vertices.length;
@@ -725,7 +704,7 @@ Filters.triSubdiv = function(mesh, levels) {
         }
       }
     }
-    // ----------- STUDENT CODE END ------------
+
   }
   mesh.calculateFacesArea();
   mesh.updateNormals();
@@ -738,8 +717,7 @@ Filters.loop = function(mesh, levels) {
 
   for (let l = 0; l < levels; l++) {
     const faces = mesh.getModifiableFaces();
-    // ----------- STUDENT CODE BEGIN ------------
-    // ----------- Our reference solution uses 123 lines of code.
+
     let partial = false; // selected?
     if (faces.length < mesh.faces.length) partial = true;
 
@@ -911,7 +889,7 @@ Filters.loop = function(mesh, levels) {
         vertices[i].position = oddPos[i - n_verts];
       }
     }
-    // ----------- STUDENT CODE END ------------
+
   }
 
   mesh.calculateFacesArea();
@@ -923,8 +901,7 @@ Filters.loop = function(mesh, levels) {
 Filters.quadSubdiv = function(mesh, levels) {
   for (let l = 0; l < levels; l++) {
     const faces = mesh.getModifiableFaces();
-    // ----------- STUDENT CODE BEGIN ------------
-    // ----------- Our reference solution uses 55 lines of code.
+
     const vertices = mesh.getModifiableVertices();
     const n_faces = faces.length;
     const n_verts = vertices.length;
@@ -985,7 +962,7 @@ Filters.quadSubdiv = function(mesh, levels) {
     for (let i = 0; i < centroids.length; i++) {
       centroids[i].position = f_centroids[i];
     }
-    // ----------- STUDENT CODE END ------------
+
   }
 
   mesh.calculateFacesArea();
@@ -997,9 +974,7 @@ Filters.quadSubdiv = function(mesh, levels) {
 Filters.catmullClark = function(mesh, levels) {
   for (let l = 0; l < levels; l++) {
     const faces = mesh.faces;
-    // ----------- STUDENT CODE BEGIN ------------
-    // ----------- Our reference solution uses 102 lines of code.
-    // ----------- STUDENT CODE END ------------
+
     Gui.alertOnce("Catmull-Clark subdivide is not implemented yet");
   }
 
